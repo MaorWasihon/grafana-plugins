@@ -1,0 +1,77 @@
+.stat-advanced-hover-edge {
+  transition: box-shadow 200ms ease-out, transform 200ms ease-out;
+}
+.stat-advanced-hover-edge:hover {
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.stat-advanced-glass-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-advanced-glass-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.575) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  pointer-events: none;
+  opacity: 0.25;
+  animation: statGlassShimmer 8s ease-in-out infinite;
+}
+
+@keyframes statGlassShimmer {
+  0%   { background-position: -150% 0; }
+  100% { background-position: 150% 0; }
+}
+
+@keyframes statAdvancedPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes statAdvancedGlow {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.12);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+/* ── Scanlines ───────────────────────────────── */
+.stat-advanced-scanlines {
+  position: relative;
+}
+.stat-advanced-scanlines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.04) 0px,
+    rgba(0, 0, 0, 0.04) 1px,
+    transparent       1px,
+    transparent       4px
+  );
+}
+
