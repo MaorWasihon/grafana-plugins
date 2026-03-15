@@ -1,10 +1,8 @@
 import { PanelPlugin } from '@grafana/data';
 import {
   BigValueColorMode,
-  BigValueGraphMode,
   BigValueJustifyMode,
   BigValueTextMode,
-  PercentChangeColorMode,
 } from '@grafana/schema';
 
 import { StatAdvancedPanel } from './StatAdvancedPanel';
@@ -16,7 +14,7 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
     const mainCategory = ['Stat styles'];
     const backgroundCategory = ['🖼️ Background'];
     const borderCategory = ['🔲 Border & shadow'];
-    const fontCategory = ['📝 Typography'];
+    const fontCategory = ['📝 Text'];
     const innerTitleCategory = ['{ } Headline'];
     const debuggingCategory = ['🕵️ Debugging'];
 
@@ -54,15 +52,16 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
       },
     })
     // weight
-    .addSliderInput({
+    .addRadio({
       path: 'innerTitleWeight',
       name: 'Title weight',
       category: innerTitleCategory,
       defaultValue: defaultOptions.innerTitleWeight,
       settings: {
-        min: 300,
-        max: 900,
-        step: 100,
+          options: [
+            { value: 'regular', label: 'Regular' },
+            { value: 'bold',    label: 'Bold'    },
+          ],
       },
     })
     // align
@@ -130,6 +129,20 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
       name: 'Hover edge highlight',
       category: backgroundCategory,
       defaultValue: defaultOptions.enableHoverHighlight,
+    })
+    .addSelect({
+      path: 'colorMode',
+      name: 'Color mode',
+      defaultValue: BigValueColorMode.None,
+      category: backgroundCategory,
+      settings: {
+        options: [
+          { value: BigValueColorMode.None, label: 'None' },
+          { value: BigValueColorMode.Value, label: 'Value' },
+          { value: BigValueColorMode.Background, label: 'Background gradient' },
+          { value: BigValueColorMode.BackgroundSolid, label: 'Background solid' },
+        ],
+      },
     });
 
 
@@ -201,16 +214,45 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
           step: 1,
         },
     })
-    .addSliderInput({
+    .addRadio({
         path: 'fontWeight',
         name: 'Font weight (thin → thick)',
         category: fontCategory,
         defaultValue: defaultOptions.fontWeight,
         settings: {
-          min: 300,
-          max: 900,
-          step: 100,
+          options: [
+            { value: 'regular', label: 'Regular' },
+            { value: 'bold',    label: 'Bold'    },
+          ],
         },
+    })
+    .addSelect({
+      path: 'textMode',
+      name: 'Text mode',
+      description: 'Control if name and value are displayed or just name',
+      category: fontCategory,
+      settings: {
+        options: [
+          { value: BigValueTextMode.Auto, label: 'Auto' },
+          { value: BigValueTextMode.Value, label: 'Value' },
+          { value: BigValueTextMode.ValueAndName, label: 'Value and name' },
+          { value: BigValueTextMode.Name, label: 'Name' },
+          { value: BigValueTextMode.None, label: 'None' },
+        ],
+      },
+      defaultValue: defaultOptions.textMode,
+    })
+    .addRadio({
+      path: 'justifyMode',
+      name: 'Text alignment',
+      defaultValue: defaultOptions.justifyMode,
+      category: fontCategory,
+      settings: {
+        options: [
+          { value: BigValueJustifyMode.Auto, label: 'Auto' },
+          { value: BigValueJustifyMode.Center, label: 'Center' },
+        ],
+      },
     });
 
   // debug
@@ -224,22 +266,6 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
   
    // Text / layout
     builder
-      .addSelect({
-        path: 'textMode',
-        name: 'Text mode',
-        description: 'Control if name and value are displayed or just name',
-        category: mainCategory,
-        settings: {
-          options: [
-            { value: BigValueTextMode.Auto, label: 'Auto' },
-            { value: BigValueTextMode.Value, label: 'Value' },
-            { value: BigValueTextMode.ValueAndName, label: 'Value and name' },
-            { value: BigValueTextMode.Name, label: 'Name' },
-            { value: BigValueTextMode.None, label: 'None' },
-          ],
-        },
-        defaultValue: defaultOptions.textMode,
-      })
       .addRadio({
         path: 'wideLayout',
         name: 'Wide layout',
@@ -254,80 +280,4 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
         showIf: (config) => config.textMode === BigValueTextMode.ValueAndName,
       });
 
-    // Color / graph / alignment / percent change
-    builder
-      .addSelect({
-        path: 'colorMode',
-        name: 'Color mode',
-        defaultValue: BigValueColorMode.Value,
-        category: mainCategory,
-        settings: {
-          options: [
-            { value: BigValueColorMode.None, label: 'None' },
-            { value: BigValueColorMode.Value, label: 'Value' },
-            { value: BigValueColorMode.Background, label: 'Background gradient' },
-            { value: BigValueColorMode.BackgroundSolid, label: 'Background solid' },
-          ],
-        },
-      })
-      .addRadio({
-        path: 'graphMode',
-        name: 'Graph mode',
-        description: 'Stat panel graph / sparkline mode',
-        category: mainCategory,
-        defaultValue: defaultOptions.graphMode,
-        settings: {
-          options: [
-            { value: BigValueGraphMode.None, label: 'None' },
-            { value: BigValueGraphMode.Area, label: 'Area' },
-          ],
-        },
-      })
-      .addRadio({
-        path: 'justifyMode',
-        name: 'Text alignment',
-        defaultValue: defaultOptions.justifyMode,
-        category: mainCategory,
-        settings: {
-          options: [
-            { value: BigValueJustifyMode.Auto, label: 'Auto' },
-            { value: BigValueJustifyMode.Center, label: 'Center' },
-          ],
-        },
-      })
-      .addBooleanSwitch({
-        path: 'showPercentChange',
-        name: 'Show percent change',
-        defaultValue: defaultOptions.showPercentChange,
-        category: mainCategory,
-      })
-      .addSelect({
-        path: 'percentChangeColorMode',
-        name: 'Percent change color mode',
-        defaultValue: defaultOptions.percentChangeColorMode,
-        category: mainCategory,
-        settings: {
-          options: [
-            { value: PercentChangeColorMode.Standard, label: 'Standard' },
-            { value: PercentChangeColorMode.Inverted, label: 'Inverted' },
-            { value: PercentChangeColorMode.SameAsValue, label: 'Same as value' },
-          ],
-        },
-        showIf: (config) => config.showPercentChange,
-      });
-
-    // Orientation (string options, we map in the panel)
-    builder.addRadio({
-      path: 'orientation',
-      name: 'Orientation',
-      category: mainCategory,
-      defaultValue: defaultOptions.orientation,
-      settings: {
-        options: [
-          { value: 'auto', label: 'Auto' },
-          { value: 'horizontal', label: 'Horizontal' },
-          { value: 'vertical', label: 'Vertical' },
-        ],
-      },
-    });
   });

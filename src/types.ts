@@ -17,6 +17,9 @@ export type OrientationOption = 'auto' | 'horizontal' | 'vertical';
 // InnerTitle
 export type InnerTitleAlign = 'left' | 'center' | 'right'
 
+// font weight 
+export type FontWeightOption = 'regular' | 'bold'
+
 // Fonts
 export type FontChoice = 
   | 'inherit'
@@ -82,14 +85,14 @@ export interface StatAdvancedOptions {
 
   // Typography
   textSize: number; //px 12-72 
-  fontWeight: number; // 100-900 (thin to thick)
+  fontWeight: FontWeightOption; // 400-1000 (thin to thick)
   fontChoice: FontChoice;
 
   // Inner title options
   innerTitleText?: string;
   innerTitleFont: FontChoice;
   innerTitleSize: number;
-  innerTitleWeight: number;
+  innerTitleWeight: FontWeightOption;
   innerTitleAlign: InnerTitleAlign;
 
   // debug 
@@ -102,7 +105,7 @@ export const defaultOptions: StatAdvancedOptions = {
   wideLayout: true,
   colorMode: BigValueColorMode.Value,
   graphMode: BigValueGraphMode.None,
-  justifyMode: BigValueJustifyMode.Auto,
+  justifyMode: BigValueJustifyMode.Center,
   showPercentChange: false,
   percentChangeColorMode: PercentChangeColorMode.Standard,
   orientation: 'auto',
@@ -133,13 +136,13 @@ export const defaultOptions: StatAdvancedOptions = {
   // Typography
   fontChoice: 'inherit',
   textSize: 40, 
-  fontWeight: 300, 
+  fontWeight: 'regular', 
 
   // InnerTitle
   innerTitleText: '',
   innerTitleFont: 'inherit',
   innerTitleSize: 14,
-  innerTitleWeight: 400,
+  innerTitleWeight: 'regular',
   innerTitleAlign: 'center',
 
   // debug 

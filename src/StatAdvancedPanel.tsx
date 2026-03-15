@@ -14,7 +14,7 @@ import { BigValueTextMode, BigValueGraphMode, VizTextDisplayOptions } from '@gra
 import { BigValue, DataLinksContextMenu, useTheme2, VizRepeater, VizRepeaterRenderValueProps } from '@grafana/ui';
 
 import { StatAdvancedOptions, defaultOptions } from './types';
-import { getContainerStyle, mapFontChoice } from './styles';
+import { getContainerStyle, mapFontChoice, mapFontWeight } from './styles';
 import  './styles.css';
 
 type Props = PanelProps<StatAdvancedOptions>;
@@ -143,8 +143,8 @@ export const StatAdvancedPanel = memo((props: Props) => {
       }
 
 
-      const weight = Math.max(300, Math.min(900, fullOptions.fontWeight));
-      const innerTitleWeight = Math.max(300, Math.min(900, fullOptions.innerTitleWeight));
+      const weight = mapFontWeight(fullOptions.fontWeight);
+      const innerTitleWeight = mapFontWeight(fullOptions.innerTitleWeight);      
       const innerTitleSize = Math.max(8, Math.min(48, fullOptions.innerTitleSize));
       const innerTitleFontFamily = mapFontChoice(fullOptions.innerTitleFont); // you can export mapFontChoice or duplicate logic
 

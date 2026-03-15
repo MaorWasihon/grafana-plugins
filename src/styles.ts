@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { StatAdvancedOptions, FontChoice, BoxShadowPreset, FONT_OPTIONS } from './types';
+import { StatAdvancedOptions, FontChoice, BoxShadowPreset, FONT_OPTIONS , FontWeightOption} from './types';
 
 
 function hexOrCssToRgba(color: string, alpha: number): string {
@@ -39,6 +39,13 @@ function hexOrCssToRgba(color: string, alpha: number): string {
 export function mapFontChoice(font: FontChoice): string | undefined {
   return FONT_OPTIONS.find((f) => f.value === font)?.css;
 
+}
+
+export function mapFontWeight(weight: FontWeightOption): number {
+  switch (weight) {
+    case 'regular': return 400;
+    case 'bold':    return 700;
+  }
 }
 
 function applyBoxShadow(style: CSSProperties, preset: BoxShadowPreset, effectiveColor: string) {
@@ -83,7 +90,7 @@ export function getContainerStyle(
     style.fontFamily = fontFamily;
   }
   
-  const weight = Math.max(300, Math.min(900, options.fontWeight)); 
+  const weight = mapFontWeight(options.fontWeight);
   style.fontWeight = weight;
 
   // Border radius (0–50%)
@@ -117,7 +124,7 @@ export function getContainerStyle(
   if (options.enableScanlines) {
     classes.push('stat-advanced-scanlines');
   }
-
+  
 
   // Shadows, including “shine”
   applyBoxShadow(style, options.boxShadow, effectiveColor);
