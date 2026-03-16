@@ -51,6 +51,16 @@ export const FONT_OPTIONS: Array<{ value: FontChoice; label: string; css: string
   { value: 'courier',     label: 'Courier New',             css: '"Courier New", Courier, monospace' },
 ];
 
+// Image overlay
+export interface ImageOverlayConfig {
+  imageFileName: string; // e.g., 'icn-singlestat-panel.svg'
+  positionX: number; // percentage 0-100
+  positionY: number; // percentage 0-100
+  width: number; // percentage 0-100
+  height: number; // percentage 0-100
+  opacity: number; // 0-100
+  zIndex: number; // order: 1-100
+}
 
 
 export type BoxShadowPreset = 'none' | 'soft' | 'strong' | 'shine';
@@ -97,6 +107,10 @@ export interface StatAdvancedOptions {
 
   // debug 
   debugOutline: boolean;
+
+  // Image overlay
+  enableImageOverlay: boolean;
+  imageOverlay?: ImageOverlayConfig;
 }
 
 export const defaultOptions: StatAdvancedOptions = {
@@ -147,4 +161,17 @@ export const defaultOptions: StatAdvancedOptions = {
 
   // debug 
   debugOutline: false,
+
+  // Image overlay
+  enableImageOverlay: false,
+  imageOverlay: {
+    imageFileName: '',
+    positionX: 50,
+    positionY: 50,
+    width: 50,
+    height: 50,
+    opacity: 100,
+    zIndex: 1,
+  },
+
 };

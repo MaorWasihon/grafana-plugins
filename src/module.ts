@@ -7,6 +7,7 @@ import {
 
 import { StatAdvancedPanel } from './StatAdvancedPanel';
 import { defaultOptions, FONT_OPTIONS, StatAdvancedOptions } from './types';
+import { ImageOverlayEditor } from './ImageOverlayEditor';
 
 export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
   .useFieldConfig()
@@ -18,8 +19,24 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
     const fontCategory = ['📝 Text'];
     const innerTitleCategory = ['{ } Headline'];
     const debuggingCategory = ['🕵️ Debugging'];
+    const imageCategory = ['🖼️ Image Overlay'];
 
+    // List of available images in the img folder
+    const AVAILABLE_IMAGES = [
+      'icn-singlestat-panel.svg',
+      'aeronautics-logo.png',
+      // Add more images as you add them to the img folder
+    ];
 
+    // Wrapper component for the custom editor
+    const ImageOverlayEditorWrapper = (props: any) => {
+      const React = require('react');
+      return React.createElement(ImageOverlayEditor, {
+        value: props.value,
+        onChange: props.onChange,
+        availableImages: AVAILABLE_IMAGES,
+      });
+    };
 
   // InnerTitle
   builder
@@ -302,6 +319,24 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
         category: valueOptions,
         editor: standardEditorsRegistry.get('field-name').editor as any,
         defaultValue: '',
+      });
+
+    // Image Overlay
+    builder
+      .addBooleanSwitch({
+        path: 'enableImageOverlay',
+        name: 'Enable image overlay',
+        category: imageCategory,
+        defaultValue: defaultOptions.enableImageOverlay,
+      })
+      .addCustomEditor({
+        id: 'imageOverlay',
+        path: 'imageOverlay',
+        name: 'Image settings',
+        category: imageCategory,
+        editor: ImageOverlayEditorWrapper,
+        defaultValue: defaultOptions.imageOverlay,
+        showIf: (config) => config.enableImageOverlay === true,
       });
 
    // Text / layout
