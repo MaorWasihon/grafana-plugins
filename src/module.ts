@@ -1,4 +1,4 @@
-import { PanelPlugin } from '@grafana/data';
+import { PanelPlugin, ReducerID, standardEditorsRegistry } from '@grafana/data';
 import {
   BigValueColorMode,
   BigValueJustifyMode,
@@ -12,6 +12,7 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
   .useFieldConfig()
   .setPanelOptions((builder) => {
     const mainCategory = ['Stat styles'];
+    const valueOptions = ['Value options'];
     const backgroundCategory = ['🖼️ Background'];
     const borderCategory = ['🔲 Border & shadow'];
     const fontCategory = ['📝 Text'];
@@ -263,7 +264,46 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
       category: debuggingCategory, 
       defaultValue: defaultOptions.debugOutline,
     });
-  
+
+    // value options 
+    builder
+      .addRadio({
+        path: 'reduceOptions.values', 
+        name: 'Show',
+        category: valueOptions,
+        defaultValue: false, 
+        settings: {
+          options: [
+            { value: false, label: 'Calculated'},
+            { value: true, label: 'All values'},
+          ],
+        },
+      })
+      .addNumberInput({
+        path: 'reduceOptions.limit', 
+        name: 'Limit', 
+        category: valueOptions,
+        defaultValue: 25,
+        showIf: (options) => options.reduceOptions.values === true,
+      })
+      .addCustomEditor({
+        id: 'reduceOptions.fields',
+        path: 'reduceOptions.fields',
+        name: 'Fields', 
+        category: valueOptions,
+        editor: standardEditorsRegistry.get('stats-picker').editor as any,
+        defaultValue: [ReducerID.lastNotNull],
+        showIf: (options) => !options.reduceOptions.values,
+      })
+      .addCustomEditor({
+        id: 'reduceOptions.calcs',
+        path: 'reduceOptions.calcs',
+        name: 'Calculation', 
+        category: valueOptions,
+        editor: standardEditorsRegistry.get('field-name').editor as any,
+        defaultValue: '',
+      });
+
    // Text / layout
     builder
       .addRadio({
