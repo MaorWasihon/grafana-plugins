@@ -17,6 +17,16 @@ import { StatAdvancedOptions, defaultOptions } from './types';
 import { getContainerStyle, mapFontChoice, mapFontWeight } from './styles';
 import  './styles.css';
 
+// Import images for overlay
+import iconAeronautics  from './img/aeronautics-logo.png';
+import iconSinglestat from './img/icn-singlestat-panel.svg';
+
+// Image map - add your images here
+const IMAGE_MAP: Record<string, string> = {
+  'icn-singlestat-panel.svg': iconSinglestat,
+  'aeronautics-logo.png': iconAeronautics,
+};
+
 type Props = PanelProps<StatAdvancedOptions>;
 
 export const StatAdvancedPanel = memo((props: Props) => {
@@ -244,12 +254,38 @@ export const StatAdvancedPanel = memo((props: Props) => {
   const innerWidth = Math.max(0, width - pad * 2);
   const innerHeight = Math.max(0, height - pad * 2);
 
+  // Image overlay rendering
+  const imageOverlayStyle: React.CSSProperties | undefined = fullOptions.enableImageOverlay && fullOptions.imageOverlay && fullOptions.imageOverlay.imageFileName
+    ? (() => {
+        const imgPath = IMAGE_MAP[fullOptions.imageOverlay!.imageFileName];
+        if (!imgPath) {
+          console.warn(`Image not found: ${fullOptions.imageOverlay!.imageFileName}`);
+          return undefined;
+        }
+        return {
+          position: 'absolute',
+          left: `${fullOptions.imageOverlay!.positionX}%`,
+          top: `${fullOptions.imageOverlay!.positionY}%`,
+          width: `${fullOptions.imageOverlay!.width}%`,
+          height: `${fullOptions.imageOverlay!.height}%`,
+          opacity: fullOptions.imageOverlay!.opacity / 100,
+          backgroundImage: `url('${imgPath}')`,
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          zIndex: fullOptions.imageOverlay!.zIndex,
+          pointerEvents: 'none',
+        } as React.CSSProperties;
+      })()
+    : undefined;
+
   return (
     <div style={{
         width: '100%',
         height: '100%', 
         boxSizing: 'border-box', 
         padding: fullOptions.panelPadding,
+        position: 'relative',
     }}>
         <div className={combinedClassName} style={containerStyle}>
           <VizRepeater
@@ -270,6 +306,7 @@ export const StatAdvancedPanel = memo((props: Props) => {
             }
           />
         </div>
+        {imageOverlayStyle && <div style={imageOverlayStyle} />}
     </div>
   );
 });
