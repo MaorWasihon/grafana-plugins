@@ -18,13 +18,55 @@ import { getContainerStyle, mapFontChoice, mapFontWeight } from './styles';
 import  './styles.css';
 
 // Import images for overlay
-import iconAeronautics  from './img/aeronautics-logo.png';
 import iconSinglestat from './img/icn-singlestat-panel.svg';
+import iconAntena from './img/antena.svg';
+import iconBulletCamera from './img/bullet-camera.svg';
+import iconCameraFill from './img/camera-fill.svg';
+import iconCamera from './img/camera.svg';
+import iconDomeCamera from './img/dome-camera.svg';
+import iconIntercom from './img/intercom.svg';
+import iconPc from './img/pc.svg';
+import iconPlaneA from './img/plane-a.svg';
+import iconPlaneB from './img/plane-b.svg';
+import iconSatelite from './img/satelite.svg';
+import iconServerA from './img/server-a.svg';
+import iconServerB from './img/server-b.svg';
+import iconServerC from './img/server-c.svg';
+import iconServerD from './img/server-d.svg';
+import iconVideoRecoredrFill from './img/video-recorder-fill.svg';
+import iconVideoRecoredrGif from './img/video-recorder.gif';
+import iconVideoRecoredr from './img/video-recorder.svg';
+import iconVideo from './img/video.svg';
+import iconVMWareA from './img/vmware-a.svg';
+import iconVMWareB from './img/vmware-b.svg';
+import iconVMWareC from './img/vmware-c.svg';
+import iconWorkstation from './img/workstation.svg';
 
 // Image map - add your images here
 const IMAGE_MAP: Record<string, string> = {
   'icn-singlestat-panel.svg': iconSinglestat,
-  'aeronautics-logo.png': iconAeronautics,
+  'antena.svg': iconAntena,
+  'bullet-camera.svg': iconBulletCamera,
+  'camera-fill.svg': iconCameraFill,
+  'camera.svg': iconCamera,
+  'dome-camera.svg': iconDomeCamera,
+  'intercom.svg': iconIntercom,
+  'pc.svg': iconPc,
+  'plane-a.svg': iconPlaneA,
+  'plane-b.svg': iconPlaneB,
+  'satelite.svg': iconSatelite,
+  'server-a.svg': iconServerA,
+  'server-b.svg': iconServerB,
+  'server-c.svg': iconServerC,
+  'server-d.svg': iconServerD,
+  'video-recorder-fill.svg': iconVideoRecoredrFill,
+  'video-recorder.gif': iconVideoRecoredrGif,
+  'video-recorder.svg': iconVideoRecoredr,
+  'video.svg': iconVideo,
+  'vmware-a.svg': iconVMWareA,
+  'vmware-b.svg': iconVMWareB,
+  'vmware-c.svg': iconVMWareC,
+  'workstation.svg': iconWorkstation,
 };
 
 type Props = PanelProps<StatAdvancedOptions>;

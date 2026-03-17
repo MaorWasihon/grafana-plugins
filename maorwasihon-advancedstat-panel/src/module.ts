@@ -24,7 +24,28 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
     // List of available images in the img folder
     const AVAILABLE_IMAGES = [
       'icn-singlestat-panel.svg',
-      'aeronautics-logo.png',
+      'antena.svg',
+      'bullet-camera.svg',
+      'camera-fill.svg',
+      'camera.svg',
+      'dome-camera.svg',
+      'intercom.svg',
+      'pc.svg',
+      'plane-a.svg',
+      'plane-b.svg',
+      'satelite.svg',
+      'server-a.svg',
+      'server-b.svg',
+      'server-c.svg',
+      'server-d.svg',
+      'video-recorder-fill.svg',
+      'video-recorder.gif',
+      'video-recorder.svg',
+      'video.svg',
+      'vmware-a.svg',
+      'vmware-b.svg',
+      'vmware-c.svg',
+      'workstation.svg',
       // Add more images as you add them to the img folder
     ];
 
