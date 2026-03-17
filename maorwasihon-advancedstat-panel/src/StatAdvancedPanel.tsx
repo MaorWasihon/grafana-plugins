@@ -33,9 +33,9 @@ import iconServerA from './img/server-a.svg';
 import iconServerB from './img/server-b.svg';
 import iconServerC from './img/server-c.svg';
 import iconServerD from './img/server-d.svg';
-import iconVideoRecoredrFill from './img/video-recorder-fill.svg';
-import iconVideoRecoredrGif from './img/video-recorder.gif';
-import iconVideoRecoredr from './img/video-recorder.svg';
+import iconVideoRecordFill from './img/video-record-fill.svg';
+import iconVideoRecordGif from './img/video-record.gif';
+import iconVideoRecord from './img/video-record.svg';
 import iconVideo from './img/video.svg';
 import iconVMWareA from './img/vmware-a.svg';
 import iconVMWareB from './img/vmware-b.svg';
@@ -59,9 +59,9 @@ const IMAGE_MAP: Record<string, string> = {
   'server-b.svg': iconServerB,
   'server-c.svg': iconServerC,
   'server-d.svg': iconServerD,
-  'video-recorder-fill.svg': iconVideoRecoredrFill,
-  'video-recorder.gif': iconVideoRecoredrGif,
-  'video-recorder.svg': iconVideoRecoredr,
+  'video-record-fill.svg': iconVideoRecordFill,
+  'video-record.gif': iconVideoRecordGif,
+  'video-record.svg': iconVideoRecord,
   'video.svg': iconVideo,
   'vmware-a.svg': iconVMWareA,
   'vmware-b.svg': iconVMWareB,
