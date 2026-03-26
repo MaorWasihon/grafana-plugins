@@ -154,6 +154,10 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
           { value: 'pulse', label: 'Soft pulse' },
           { value: 'glow', label: 'Glow' },
           { value: 'glass-shimmer', label: 'Glass shimmer' },
+          { value: 'float', label: 'Float' },
+          { value: 'bounce', label: 'Bounce' },
+          { value: 'shimmer-sweep', label: 'Shimmer sweep' },
+          { value: 'pro-glow', label: '⭐ Pro Glow (pulse + brightness)' },
         ],
       },
     })

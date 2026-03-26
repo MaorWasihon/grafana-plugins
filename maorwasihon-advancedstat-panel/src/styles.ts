@@ -116,6 +116,12 @@ export function getContainerStyle(
     style.animation = 'statAdvancedPulse 5s ease-in-out infinite';
   } else if (options.backgroundAnimation === 'glow') {
     style.animation = 'statAdvancedGlow 4s ease-in-out infinite';
+  } else if (options.backgroundAnimation === 'float') {
+    style.animation = 'statAdvancedFloat 3s ease-in-out infinite';
+  } else if (options.backgroundAnimation === 'bounce') {
+    style.animation = 'statAdvancedBounce 0.6s ease-in-out infinite';
+  } else if (options.backgroundAnimation === 'pro-glow') {
+    style.animation = 'statAdvancedProGlow 2s ease-in-out infinite';
   }
 
   if (options.backgroundAnimation === 'glass-shimmer') {
@@ -124,7 +130,9 @@ export function getContainerStyle(
   if (options.enableScanlines) {
     classes.push('stat-advanced-scanlines');
   }
-  
+  if (options.backgroundAnimation === 'shimmer-sweep') {
+    classes.push('stat-advanced-shimmer-sweep');
+  }
 
   // Shadows, including “shine”
   applyBoxShadow(style, options.boxShadow, effectiveColor);
