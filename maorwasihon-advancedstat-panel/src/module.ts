@@ -329,18 +329,18 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
         showIf: (options) => options.reduceOptions.values === true,
       })
       .addCustomEditor({
-        id: 'reduceOptions.fields',
-        path: 'reduceOptions.fields',
-        name: 'Fields', 
+        id: 'reduceOptions.calcs',
+        path: 'reduceOptions.calcs',
+        name: 'Calculation',
         category: valueOptions,
         editor: standardEditorsRegistry.get('stats-picker').editor as any,
         defaultValue: [ReducerID.lastNotNull],
         showIf: (options) => !options.reduceOptions.values,
       })
       .addCustomEditor({
-        id: 'reduceOptions.calcs',
-        path: 'reduceOptions.calcs',
-        name: 'Calculation', 
+        id: 'reduceOptions.fields',
+        path: 'reduceOptions.fields',
+        name: 'Fields',
         category: valueOptions,
         editor: standardEditorsRegistry.get('field-name').editor as any,
         defaultValue: '',
