@@ -9,7 +9,7 @@ import { ReduceDataOptions } from '@grafana/data';
 
 export type BackgroundGradientDirection = 'vertical' | 'horizontal' | 'diagonal';
 export type BackgroundImageFit = 'cover' | 'contain';
-export type BackgroundAnimation = 'none' | 'pulse' | 'glow' | 'glass-shimmer';
+export type BackgroundAnimation = 'none' | 'pulse' | 'glow' | 'glass-shimmer' | 'float' | 'bounce' | 'shimmer-sweep' | 'pro-glow';
 
 // Orientation used only in our options (we map it in the panel)
 export type OrientationOption = 'auto' | 'horizontal' | 'vertical';
