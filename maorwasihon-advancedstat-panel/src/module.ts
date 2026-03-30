@@ -8,6 +8,7 @@ import {
 import { StatAdvancedPanel } from './StatAdvancedPanel';
 import { defaultOptions, FONT_OPTIONS, StatAdvancedOptions } from './types';
 import { ImageOverlayEditor } from './ImageOverlayEditor';
+// import { SvgIconMappingsEditor } from './SvgIconMappingsEditor';
 
 export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
   .useFieldConfig()
@@ -18,8 +19,10 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
     const borderCategory = ['🔲 Border & shadow'];
     const fontCategory = ['📝 Text'];
     const innerTitleCategory = ['{ } Headline'];
+    const footerCategory = ['{ } Footer'];
     const debuggingCategory = ['🕵️ Debugging'];
     const imageCategory = ['🖼️ Image Overlay'];
+    // const svgIconCategory = ['✦ Status Icons'];
 
     // List of available images in the img folder
     const AVAILABLE_IMAGES = [
@@ -118,6 +121,65 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
       },
     });
 
+
+  // InnerTitle
+  builder
+    // textbox
+    .addTextInput({
+      path: 'footerTitleText',
+      name: 'Title text (inside card)',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleText,
+    })
+    // font
+    .addSelect({
+      path: 'footerTitleFont',
+      name: 'Title font',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleFont,
+      settings: {
+        options: [...FONT_OPTIONS],
+      },
+    })
+    // size 
+    .addSliderInput({
+      path: 'footerTitleSize',
+      name: 'Title size (px)',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleSize,
+      settings: {
+        min: 8,
+        max: 48,
+        step: 1,
+      },
+    })
+    // weight
+    .addRadio({
+      path: 'footerTitleWeight',
+      name: 'Title weight',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleWeight,
+      settings: {
+          options: [
+            { value: 'regular', label: 'Regular' },
+            { value: 'bold',    label: 'Bold'    },
+          ],
+      },
+    })
+    // align
+    .addSelect({
+      path: 'footerTitleAlign',
+      name: 'Title alignment',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleAlign,
+      settings: {
+        options: [
+          { value: 'left', label: 'Left' },
+          { value: 'center', label: 'Center' },
+          { value: 'right', label: 'Right' },
+        ],
+      },
+    });
 
     // Background – only opacity now, color comes from thresholds
     builder
@@ -379,5 +441,33 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
         defaultValue: defaultOptions.wideLayout,
         showIf: (config) => config.textMode === BigValueTextMode.ValueAndName,
       });
+
+    // // ── SVG Status Icons ────────────────────────────────────────────────────
+    // const SvgIconMappingsEditorWrapper = (props: any) => {
+    //   const React = require('react');
+    //   return React.createElement(SvgIconMappingsEditor, {
+    //     value: props.value,
+    //     onChange: props.onChange,
+    //   });
+    // };
+
+    // builder
+    //   .addBooleanSwitch({
+    //     path: 'enableSvgIcons',
+    //     name: 'Enable status icons',
+    //     description: 'Overlay animated icons that are triggered by the threshold colour',
+    //     category: svgIconCategory,
+    //     defaultValue: defaultOptions.enableSvgIcons,
+    //   })
+    //   .addCustomEditor({
+    //     id: 'svgIconMappings',
+    //     path: 'svgIconMappings',
+    //     name: 'Icon mappings',
+    //     description: 'Map a threshold color → animated icon + position',
+    //     category: svgIconCategory,
+    //     editor: SvgIconMappingsEditorWrapper,
+    //     defaultValue: defaultOptions.svgIconMappings,
+    //     showIf: (config) => config.enableSvgIcons === true,
+    //   });
 
   });

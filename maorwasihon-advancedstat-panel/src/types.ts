@@ -6,6 +6,7 @@ import {
   PercentChangeColorMode,
 } from '@grafana/schema';
 import { ReduceDataOptions } from '@grafana/data';
+import { SvgIconMapping } from './SvgIconMappingsEditor';
 
 export type BackgroundGradientDirection = 'vertical' | 'horizontal' | 'diagonal';
 export type BackgroundImageFit = 'cover' | 'contain';
@@ -16,6 +17,9 @@ export type OrientationOption = 'auto' | 'horizontal' | 'vertical';
 
 // InnerTitle
 export type InnerTitleAlign = 'left' | 'center' | 'right'
+
+// Footer
+export type FooterTitleAlign = 'left' | 'center' | 'right'
 
 // font weight 
 export type FontWeightOption = 'regular' | 'bold'
@@ -105,12 +109,22 @@ export interface StatAdvancedOptions {
   innerTitleWeight: FontWeightOption;
   innerTitleAlign: InnerTitleAlign;
 
+    // Inner title options
+  footerTitleText?: string;
+  footerTitleFont: FontChoice;
+  footerTitleSize: number;
+  footerTitleWeight: FontWeightOption;
+  footerTitleAlign: FooterTitleAlign;
   // debug 
   debugOutline: boolean;
 
   // Image overlay
   enableImageOverlay: boolean;
   imageOverlay?: ImageOverlayConfig;
+
+  // SVG icon overlays (threshold-color → animated icon)
+  enableSvgIcons: boolean;
+  svgIconMappings: SvgIconMapping[];
 }
 
 export const defaultOptions: StatAdvancedOptions = {
@@ -159,6 +173,13 @@ export const defaultOptions: StatAdvancedOptions = {
   innerTitleWeight: 'regular',
   innerTitleAlign: 'center',
 
+  // Footer
+  footerTitleText: '',
+  footerTitleFont: 'inherit',
+  footerTitleSize: 14,
+  footerTitleWeight: 'regular',
+  footerTitleAlign: 'center',
+
   // debug 
   debugOutline: false,
 
@@ -174,4 +195,7 @@ export const defaultOptions: StatAdvancedOptions = {
     zIndex: 1,
   },
 
+  // SVG icons
+  enableSvgIcons: false,
+  svgIconMappings: [],
 };
