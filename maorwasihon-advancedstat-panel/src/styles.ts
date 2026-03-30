@@ -48,6 +48,11 @@ export function mapFontWeight(weight: FontWeightOption): number {
   }
 }
 
+//testing
+export function getTextColor(mode: 'fixed' | 'threshold', fixedColor: string, thresholdColor?: string): string {
+  return mode === 'threshold' ?  (thresholdColor ?? '#ffffff') : fixedColor;
+}
+
 function applyBoxShadow(style: CSSProperties, preset: BoxShadowPreset, effectiveColor: string) {
   if (preset === 'none') {
     return;
@@ -71,7 +76,7 @@ function applyBoxShadow(style: CSSProperties, preset: BoxShadowPreset, effective
 export function getContainerStyle(
   options: StatAdvancedOptions,
   baseColor?: string
-): {style: CSSProperties; className?: string } {
+): {style: CSSProperties; className?: string ,  innerTitleStyle: CSSProperties, footerTitleStyle: CSSProperties} {
   const style: CSSProperties = {
     width: '100%',
     height: '100%',
@@ -139,5 +144,8 @@ export function getContainerStyle(
 
   const className = classes.length > 0 ? classes.join(' ') : undefined;
 
-  return {  style, className };
+  const innerTitleColor = getTextColor(options.innerTitleTextColorMode, options.innerTitleTextColor, baseColor);
+  const footerTitleColor = getTextColor(options.footerTitleTextColorMode, options.footerTitleTextColor, baseColor);
+
+  return {  style, className, innerTitleStyle: {color: innerTitleColor}, footerTitleStyle: {color: footerTitleColor} };
 }

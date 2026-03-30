@@ -106,6 +106,27 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
           ],
       },
     })
+    // Text Color Mode
+    .addRadio({
+      path: 'innerTitleTextColorMode',
+      name: 'Title text color mode',
+      category: innerTitleCategory,
+      defaultValue: defaultOptions.innerTitleTextColorMode,
+      settings: {
+        options: [
+          { value: 'fixed', label: 'Fixed' },
+          { value: 'threshold', label: 'Threshold' },
+        ],
+      },
+    })
+    // Text Color
+    .addColorPicker({
+      path: 'innerTitleTextColor',
+      name: 'Title text color',
+      category: innerTitleCategory,
+      defaultValue: defaultOptions.innerTitleTextColor,
+      showIf: (config) => config.innerTitleTextColorMode === 'fixed',
+    })
     // align
     .addSelect({
       path: 'innerTitleAlign',
@@ -122,7 +143,7 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
     });
 
 
-  // InnerTitle
+  // Footer Title
   builder
     // textbox
     .addTextInput({
@@ -165,6 +186,27 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
             { value: 'bold',    label: 'Bold'    },
           ],
       },
+    })
+    // Text Color Mode
+    .addRadio({
+      path: 'footerTitleTextColorMode',
+      name: 'Title text color mode',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleTextColorMode,
+      settings: {
+        options: [
+          { value: 'fixed', label: 'Fixed' },
+          { value: 'threshold', label: 'Threshold' },
+        ],
+      },
+    })
+    // Text Color
+    .addColorPicker({
+      path: 'footerTitleTextColor',
+      name: 'Title text color',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleTextColor,
+      showIf: (config) => config.footerTitleTextColorMode === 'fixed',
     })
     // align
     .addSelect({

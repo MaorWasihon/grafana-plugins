@@ -17,9 +17,12 @@ export type OrientationOption = 'auto' | 'horizontal' | 'vertical';
 
 // InnerTitle
 export type InnerTitleAlign = 'left' | 'center' | 'right'
+export type InnerTitleTextColorMode = 'fixed' | 'threshold' 
 
 // Footer
 export type FooterTitleAlign = 'left' | 'center' | 'right'
+export type FooterTitleTextColorMode = 'fixed' | 'threshold' 
+
 
 // font weight 
 export type FontWeightOption = 'regular' | 'bold'
@@ -108,13 +111,18 @@ export interface StatAdvancedOptions {
   innerTitleSize: number;
   innerTitleWeight: FontWeightOption;
   innerTitleAlign: InnerTitleAlign;
+  innerTitleTextColorMode: InnerTitleTextColorMode;
+  innerTitleTextColor: string;
 
-    // Inner title options
+  // Footer title options
   footerTitleText?: string;
   footerTitleFont: FontChoice;
   footerTitleSize: number;
   footerTitleWeight: FontWeightOption;
   footerTitleAlign: FooterTitleAlign;
+  footerTitleTextColorMode: FooterTitleTextColorMode;
+  footerTitleTextColor: string;
+
   // debug 
   debugOutline: boolean;
 
@@ -172,6 +180,8 @@ export const defaultOptions: StatAdvancedOptions = {
   innerTitleSize: 14,
   innerTitleWeight: 'regular',
   innerTitleAlign: 'center',
+  innerTitleTextColor: '#ffffff',
+  innerTitleTextColorMode: 'fixed',
 
   // Footer
   footerTitleText: '',
@@ -179,6 +189,8 @@ export const defaultOptions: StatAdvancedOptions = {
   footerTitleSize: 14,
   footerTitleWeight: 'regular',
   footerTitleAlign: 'center',
+  footerTitleTextColor: '#ffffff',
+  footerTitleTextColorMode: 'fixed',
 
   // debug 
   debugOutline: false,

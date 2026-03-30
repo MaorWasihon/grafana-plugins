@@ -212,6 +212,7 @@ export const StatAdvancedPanel = memo((props: Props) => {
         ...(fullOptions.debugOutline
           ? { border: '3px dotted black' }
           : {}),
+        color: innerTitleStyle.color,
       };
 
 
@@ -230,6 +231,7 @@ export const StatAdvancedPanel = memo((props: Props) => {
         ...(fullOptions.debugOutline
           ? { border: '3px dotted black' }
           : {}),
+        color: footerTitleStyle.color,
       };
 
 
@@ -309,7 +311,7 @@ export const StatAdvancedPanel = memo((props: Props) => {
   const thresholdColor = (primaryDisplay?.color as string | undefined) ?? undefined;
 
   // Build container style from full options + threshold color
-  const {style: containerStyle, className: containerClassNameFromStyle } = getContainerStyle(fullOptions, thresholdColor);
+  const {style: containerStyle, className: containerClassNameFromStyle, innerTitleStyle, footerTitleStyle } = getContainerStyle(fullOptions, thresholdColor);
   
   const hoverClass = fullOptions.enableHoverHighlight ? 'stat-advanced-hover-edge' : '';
   const combinedClassName = [containerClassNameFromStyle, hoverClass]
