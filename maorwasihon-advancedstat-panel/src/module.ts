@@ -145,12 +145,29 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
 
   // Footer Title
   builder
-    // textbox
+    // Source selector
+    .addRadio({
+      path: 'footerTextSource',
+      name: 'Footer content',
+      description: 'Choose what the footer displays',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTextSource,
+      settings: {
+        options: [
+          { value: 'static', label: 'Static' },
+          { value: 'value',  label: 'Value'  },
+          { value: 'name',   label: 'Name'   },
+          { value: 'none',   label: 'None'   },
+        ],
+      },
+    })
+    // Static text – only shown when source is 'static'
     .addTextInput({
       path: 'footerTitleText',
       name: 'Title text (inside card)',
       category: footerCategory,
       defaultValue: defaultOptions.footerTitleText,
+      showIf: (config) => config.footerTextSource === 'static',
     })
     // font
     .addSelect({
@@ -161,6 +178,7 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
       settings: {
         options: [...FONT_OPTIONS],
       },
+      showIf: (config) => config.footerTextSource !== 'none',
     })
     // size 
     .addSliderInput({
@@ -173,6 +191,7 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
         max: 48,
         step: 1,
       },
+      showIf: (config) => config.footerTextSource !== 'none',
     })
     // weight
     .addRadio({
@@ -186,6 +205,7 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
             { value: 'bold',    label: 'Bold'    },
           ],
       },
+      showIf: (config) => config.footerTextSource !== 'none',
     })
     // Text Color Mode
     .addRadio({
@@ -199,6 +219,7 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
           { value: 'threshold', label: 'Threshold' },
         ],
       },
+      showIf: (config) => config.footerTextSource !== 'none',
     })
     // Text Color
     .addColorPicker({
@@ -206,7 +227,7 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
       name: 'Title text color',
       category: footerCategory,
       defaultValue: defaultOptions.footerTitleTextColor,
-      showIf: (config) => config.footerTitleTextColorMode === 'fixed',
+      showIf: (config) => config.footerTextSource !== 'none' && config.footerTitleTextColorMode === 'fixed',
     })
     // align
     .addSelect({
@@ -221,6 +242,7 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
           { value: 'right', label: 'Right' },
         ],
       },
+      showIf: (config) => config.footerTextSource !== 'none',
     });
 
     // Background – only opacity now, color comes from thresholds

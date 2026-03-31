@@ -87,7 +87,6 @@ export const StatAdvancedPanel = memo((props: Props) => {
     if (fullOptions.textMode === BigValueTextMode.Auto && (fieldConfig.defaults.displayName || !title)) {
       return BigValueTextMode.ValueAndName;
     }
-
     return fullOptions.textMode;
   }, [fullOptions.textMode, fieldConfig.defaults.displayName, title]);
 
@@ -170,16 +169,39 @@ export const StatAdvancedPanel = memo((props: Props) => {
 
   const getTextDisplayOptions = useCallback(
     (): VizTextDisplayOptions => {
-      const size = Math.max(12, Math.min(200, fullOptions.textSize)); 
+      const size = Math.max(12, Math.min(200, fullOptions.textSize));
       return {
-        valueSize: size, 
-        titleSize: size * 0.35, 
+        valueSize: size,
+        titleSize: size * 0.35,
         percentSize: size * 0.3,
       };
     },
     [fullOptions.textSize]
   );
 
+  const resolveFooterText = useCallback((fieldDisplay: FieldDisplay): string | undefined => {
+    const source = fullOptions.footerTextSource ?? 'static';
+    switch (source) {
+      case 'static':
+        return fullOptions.footerTitleText || undefined;
+      case 'value':
+        return fieldDisplay.display.text ?? undefined;
+      case 'name':
+        return fieldDisplay.display.title ?? undefined;
+      case 'none':
+      default:
+        return undefined;
+    }
+  }, [fullOptions.footerTextSource, fullOptions.footerTitleText]);
+
+  // Compute values once so we can read the threshold color
+  const values = useMemo(() => getValues(), [getValues]);
+  const primaryDisplay = values[0]?.display;
+  const thresholdColor = (primaryDisplay?.color as string | undefined) ?? undefined;
+
+  // Build container style — declared before renderComponent so styles are available in the closure
+  const { style: containerStyle, className: containerClassNameFromStyle, innerTitleStyle, footerTitleStyle } =
+    getContainerStyle(fullOptions, thresholdColor);
 
   const renderComponent = useCallback(
     (
@@ -194,11 +216,10 @@ export const StatAdvancedPanel = memo((props: Props) => {
         sparkline.timeRange = timeRange;
       }
 
-
       const weight = mapFontWeight(fullOptions.fontWeight);
-      const innerTitleWeight = mapFontWeight(fullOptions.innerTitleWeight);      
+      const innerTitleWeight = mapFontWeight(fullOptions.innerTitleWeight);
       const innerTitleSize = Math.max(8, Math.min(48, fullOptions.innerTitleSize));
-      const innerTitleFontFamily = mapFontChoice(fullOptions.innerTitleFont); // you can export mapFontChoice or duplicate logic
+      const innerTitleFontFamily = mapFontChoice(fullOptions.innerTitleFont);
 
       const titleStyle: React.CSSProperties = {
         marginBottom: 4,
@@ -208,16 +229,13 @@ export const StatAdvancedPanel = memo((props: Props) => {
         fontWeight: innerTitleWeight,
         fontFamily: innerTitleFontFamily,
         textAlign: fullOptions.innerTitleAlign,
-        ...(fullOptions.debugOutline
-          ? { border: '3px dotted black' }
-          : {}),
+        ...(fullOptions.debugOutline ? { border: '3px dotted black' } : {}),
         color: innerTitleStyle.color,
       };
 
-
-      const footerTitleWeight = mapFontWeight(fullOptions.footerTitleWeight);      
+      const footerTitleWeight = mapFontWeight(fullOptions.footerTitleWeight);
       const footerTitleSize = Math.max(8, Math.min(48, fullOptions.footerTitleSize));
-      const footerTitleFontFamily = mapFontChoice(fullOptions.footerTitleFont); // you can export mapFontChoice or duplicate logic
+      const footerTitleFontFamily = mapFontChoice(fullOptions.footerTitleFont);
 
       const footerStyle: React.CSSProperties = {
         marginTop: 4,
@@ -227,63 +245,59 @@ export const StatAdvancedPanel = memo((props: Props) => {
         fontWeight: footerTitleWeight,
         fontFamily: footerTitleFontFamily,
         textAlign: fullOptions.footerTitleAlign,
-        ...(fullOptions.debugOutline
-          ? { border: '3px dotted black' }
-          : {}),
+        ...(fullOptions.debugOutline ? { border: '3px dotted black' } : {}),
         color: footerTitleStyle.color,
       };
-
 
       const bodyWrapperStyle: React.CSSProperties = {
         flex: 1,
         minHeight: 0,
-        display: 'flex', 
-        alignItems: 'center', 
+        display: 'flex',
+        alignItems: 'center',
         justifyContent: 'center',
-        ...(fullOptions.debugOutline
-          ? { border: '3px dotted blue' }
-          : {}),
+        ...(fullOptions.debugOutline ? { border: '3px dotted blue' } : {}),
       };
 
-    return (
-      <div style={{ 
-        fontWeight: weight, 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
-        flexDirection: 'column' 
-        }}
-      >
-        {fullOptions.innerTitleText && 
-          <div style={titleStyle}>{fullOptions.innerTitleText}</div>
-        }
-        <div style={bodyWrapperStyle}>
-          <BigValue
-            value={value.display}
-            count={count}
-            sparkline={sparkline}
-            colorMode={fullOptions.colorMode}
-            graphMode={fullOptions.graphMode}
-            justifyMode={fullOptions.justifyMode}
-            textMode={getTextMode()}
-            alignmentFactors={alignmentFactors}
-            text={getTextDisplayOptions()}
-            width={itemWidth}
-            height={itemHeight}
-            theme={theme}
-            onClick={openMenu}
-            className={targetClassName}
-            disableWideLayout={!fullOptions.wideLayout}
-            percentChangeColorMode={fullOptions.percentChangeColorMode}
-          />
+      const footerText = resolveFooterText(value);
+
+      return (
+        <div style={{
+          fontWeight: weight,
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+          {fullOptions.innerTitleText &&
+            <div style={titleStyle}>{fullOptions.innerTitleText}</div>
+          }
+          <div style={bodyWrapperStyle}>
+            <BigValue
+              value={value.display}
+              count={count}
+              sparkline={sparkline}
+              colorMode={fullOptions.colorMode}
+              graphMode={fullOptions.graphMode}
+              justifyMode={fullOptions.justifyMode}
+              textMode={getTextMode()}
+              alignmentFactors={alignmentFactors}
+              text={getTextDisplayOptions()}
+              width={itemWidth}
+              height={itemHeight}
+              theme={theme}
+              onClick={openMenu}
+              className={targetClassName}
+              disableWideLayout={!fullOptions.wideLayout}
+              percentChangeColorMode={fullOptions.percentChangeColorMode}
+            />
+          </div>
+          {footerText &&
+            <div style={footerStyle}>{footerText}</div>
+          }
         </div>
-        {fullOptions.footerTitleText && 
-          <div style={footerStyle}>{fullOptions.footerTitleText}</div>
-        }
-      </div>
-    );
+      );
     },
-    [theme, timeRange, fullOptions, getTextMode, getTextDisplayOptions]
+    [theme, timeRange, fullOptions, getTextMode, getTextDisplayOptions, resolveFooterText, innerTitleStyle, footerTitleStyle]
   );
 
   const renderValue = useCallback(
@@ -304,75 +318,68 @@ export const StatAdvancedPanel = memo((props: Props) => {
     [renderComponent]
   );
 
-  // Compute values once so we can read the threshold color
-  const values = useMemo(() => getValues(), [getValues]);
-  const primaryDisplay = values[0]?.display;
-  const thresholdColor = (primaryDisplay?.color as string | undefined) ?? undefined;
-
-  // Build container style from full options + threshold color
-  const {style: containerStyle, className: containerClassNameFromStyle, innerTitleStyle, footerTitleStyle } = getContainerStyle(fullOptions, thresholdColor);
-  
   const hoverClass = fullOptions.enableHoverHighlight ? 'stat-advanced-hover-edge' : '';
   const combinedClassName = [containerClassNameFromStyle, hoverClass]
     .filter(Boolean)
     .join(' ');
-  const pad = Math.max(0, fullOptions.panelPadding ?? 0 ); 
+  const pad = Math.max(0, fullOptions.panelPadding ?? 0);
   const innerWidth = Math.max(0, width - pad * 2);
   const innerHeight = Math.max(0, height - pad * 2);
 
   // Image overlay rendering
-  const imageOverlayStyle: React.CSSProperties | undefined = fullOptions.enableImageOverlay && fullOptions.imageOverlay && fullOptions.imageOverlay.imageFileName
-    ? (() => {
-        const imgPath = IMAGE_MAP[fullOptions.imageOverlay!.imageFileName];
-        if (!imgPath) {
-          console.warn(`Image not found: ${fullOptions.imageOverlay!.imageFileName}`);
-          return undefined;
-        }
-        return {
-          position: 'absolute',
-          left: `${fullOptions.imageOverlay!.positionX}%`,
-          top: `${fullOptions.imageOverlay!.positionY}%`,
-          width: `${fullOptions.imageOverlay!.width}%`,
-          height: `${fullOptions.imageOverlay!.height}%`,
-          opacity: fullOptions.imageOverlay!.opacity / 100,
-          backgroundImage: `url('${imgPath}')`,
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-          zIndex: fullOptions.imageOverlay!.zIndex,
-          pointerEvents: 'none',
-        } as React.CSSProperties;
-      })()
-    : undefined;
+  const imageOverlayStyle: React.CSSProperties | undefined =
+    fullOptions.enableImageOverlay && fullOptions.imageOverlay && fullOptions.imageOverlay.imageFileName
+      ? (() => {
+          const imgPath = IMAGE_MAP[fullOptions.imageOverlay!.imageFileName];
+          if (!imgPath) {
+            console.warn(`Image not found: ${fullOptions.imageOverlay!.imageFileName}`);
+            return undefined;
+          }
+          return {
+            position: 'absolute',
+            left: `${fullOptions.imageOverlay!.positionX}%`,
+            top: `${fullOptions.imageOverlay!.positionY}%`,
+            width: `${fullOptions.imageOverlay!.width}%`,
+            height: `${fullOptions.imageOverlay!.height}%`,
+            opacity: fullOptions.imageOverlay!.opacity / 100,
+            backgroundImage: `url('${imgPath}')`,
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            zIndex: fullOptions.imageOverlay!.zIndex,
+            pointerEvents: 'none',
+          } as React.CSSProperties;
+        })()
+      : undefined;
 
   return (
     <div style={{
-        width: '100%',
-        height: '100%', 
-        boxSizing: 'border-box', 
-        padding: fullOptions.panelPadding,
-        position: 'relative',
+      width: '100%',
+      height: '100%',
+      boxSizing: 'border-box',
+      padding: fullOptions.panelPadding,
+      position: 'relative',
     }}>
-        <div className={combinedClassName} style={containerStyle}>
-          <VizRepeater
-            getValues={() => values}
-            getAlignmentFactors={getDisplayValueAlignmentFactors}
-            renderValue={renderValue}
-            width={innerWidth}
-            height={innerHeight}
-            source={data}
-            itemSpacing={3}
-            renderCounter={renderCounter}
-            autoGrid={true}
-            orientation={
-                (fullOptions.orientation === 'auto'
-                    ? undefined
-                    : fullOptions.orientation
-                ) as any
-            }
-          />
-        </div>
-        {imageOverlayStyle && <div style={imageOverlayStyle} />}
+      <div className={combinedClassName} style={containerStyle}>
+        <VizRepeater
+          getValues={() => values}
+          getAlignmentFactors={getDisplayValueAlignmentFactors}
+          renderValue={renderValue}
+          width={innerWidth}
+          height={innerHeight}
+          source={data}
+          itemSpacing={3}
+          renderCounter={renderCounter}
+          autoGrid={true}
+          orientation={
+            (fullOptions.orientation === 'auto'
+              ? undefined
+              : fullOptions.orientation
+            ) as any
+          }
+        />
+      </div>
+      {imageOverlayStyle && <div style={imageOverlayStyle} />}
     </div>
   );
 });

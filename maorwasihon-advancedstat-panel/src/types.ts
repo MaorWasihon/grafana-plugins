@@ -21,7 +21,8 @@ export type InnerTitleTextColorMode = 'fixed' | 'threshold'
 
 // Footer
 export type FooterTitleAlign = 'left' | 'center' | 'right'
-export type FooterTitleTextColorMode = 'fixed' | 'threshold' 
+export type FooterTitleTextColorMode = 'fixed' | 'threshold'
+export type FooterTextSource = 'static' | 'value' | 'name' | 'none';
 
 
 // font weight 
@@ -115,6 +116,7 @@ export interface StatAdvancedOptions {
   innerTitleTextColor: string;
 
   // Footer title options
+  footerTextSource: FooterTextSource;
   footerTitleText?: string;
   footerTitleFont: FontChoice;
   footerTitleSize: number;
@@ -134,7 +136,7 @@ export interface StatAdvancedOptions {
 
 export const defaultOptions: StatAdvancedOptions = {
   // Stat defaults
-  textMode: BigValueTextMode.Auto,
+  textMode: BigValueTextMode.Value,
   wideLayout: true,
   colorMode: BigValueColorMode.Value,
   graphMode: BigValueGraphMode.None,
@@ -167,13 +169,13 @@ export const defaultOptions: StatAdvancedOptions = {
   boxShadow: 'none',
 
   // Typography
-  fontChoice: 'inherit',
+  fontChoice: 'roboto-mono',
   textSize: 40, 
   fontWeight: 'regular', 
 
   // InnerTitle
   innerTitleText: '',
-  innerTitleFont: 'inherit',
+  innerTitleFont: 'roboto-mono',
   innerTitleSize: 14,
   innerTitleWeight: 'regular',
   innerTitleAlign: 'center',
@@ -181,8 +183,9 @@ export const defaultOptions: StatAdvancedOptions = {
   innerTitleTextColorMode: 'fixed',
 
   // Footer
+  footerTextSource: 'static',
   footerTitleText: '',
-  footerTitleFont: 'inherit',
+  footerTitleFont: 'roboto-mono',
   footerTitleSize: 14,
   footerTitleWeight: 'regular',
   footerTitleAlign: 'center',
@@ -203,6 +206,4 @@ export const defaultOptions: StatAdvancedOptions = {
     opacity: 100,
     zIndex: 1,
   },
-
-
 };
