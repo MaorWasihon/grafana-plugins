@@ -9,6 +9,7 @@ import { StatAdvancedPanel } from './StatAdvancedPanel';
 import { defaultOptions, FONT_OPTIONS, StatAdvancedOptions } from './types';
 import { ImageOverlayEditor } from './ImageOverlayEditor';
 // import { SvgIconMappingsEditor } from './SvgIconMappingsEditor';
+import { IconMappingsEditor } from './IconMappingEditor';
 
 export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
   .useFieldConfig()
@@ -22,7 +23,8 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
     const footerCategory = ['{ } Footer'];
     const debuggingCategory = ['🕵️ Debugging'];
     const imageCategory = ['🖼️ Image Overlay'];
-    // const svgIconCategory = ['✦ Status Icons'];
+    const svgIconCategory = ['✦ Status Icons'];
+
 
     // List of available images in the img folder
     const AVAILABLE_IMAGES = [
@@ -488,6 +490,30 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
         editor: ImageOverlayEditorWrapper,
         defaultValue: defaultOptions.imageOverlay,
         showIf: (config) => config.enableImageOverlay === true,
+      });
+
+
+    builder
+      .addBooleanSwitch({
+        path: 'enableIconMapping',
+        name: 'Enable icon mapping',
+        category: svgIconCategory,
+        defaultValue: defaultOptions.enableIconMapping,
+      })
+      .addCustomEditor({
+        id: 'iconMappings',
+        path: 'iconMappings',
+        name: 'Icon mappings',
+        category: svgIconCategory,
+        editor: (props: any) => {
+          const React = require('react');
+          return React.createElement(IconMappingsEditor, {
+            value: props.value,
+            onChange: props.onChange,
+          });
+        },
+        defaultValue: defaultOptions.iconMappings,
+        showIf: (config) => config.enableIconMapping === true,
       });
 
    // Text / layout

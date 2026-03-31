@@ -70,6 +70,12 @@ export interface ImageOverlayConfig {
   zIndex: number; // order: 1-100
 }
 
+// SVG Icons
+export interface IconMappingRule {
+  type: 'exact' | 'threshold';
+  exactValue?: string; // used when type === 'exact'
+  iconId: string;
+}
 
 export type BoxShadowPreset = 'none' | 'soft' | 'strong' | 'shine';
 
@@ -131,6 +137,10 @@ export interface StatAdvancedOptions {
   // Image overlay
   enableImageOverlay: boolean;
   imageOverlay?: ImageOverlayConfig;
+
+  // Icon mappings
+  enableIconMapping: boolean;
+  iconMappings: IconMappingRule[];
 
 }
 
@@ -206,4 +216,9 @@ export const defaultOptions: StatAdvancedOptions = {
     opacity: 100,
     zIndex: 1,
   },
+
+  // Icon mappings
+  enableIconMapping: false,
+  iconMappings: [],
+  
 };
