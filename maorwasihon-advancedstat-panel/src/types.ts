@@ -7,6 +7,7 @@ import {
 } from '@grafana/schema';
 import { ReduceDataOptions } from '@grafana/data';
 
+
 export type BackgroundGradientDirection = 'vertical' | 'horizontal' | 'diagonal';
 export type BackgroundImageFit = 'cover' | 'contain';
 export type BackgroundAnimation = 'none' | 'pulse' | 'glow' | 'glass-shimmer' | 'float' | 'bounce' | 'shimmer-sweep' | 'pro-glow';
@@ -16,6 +17,12 @@ export type OrientationOption = 'auto' | 'horizontal' | 'vertical';
 
 // InnerTitle
 export type InnerTitleAlign = 'left' | 'center' | 'right'
+export type InnerTitleTextColorMode = 'fixed' | 'threshold' 
+
+// Footer
+export type FooterTitleAlign = 'left' | 'center' | 'right'
+export type FooterTitleTextColorMode = 'fixed' | 'threshold' 
+
 
 // font weight 
 export type FontWeightOption = 'regular' | 'bold'
@@ -104,6 +111,17 @@ export interface StatAdvancedOptions {
   innerTitleSize: number;
   innerTitleWeight: FontWeightOption;
   innerTitleAlign: InnerTitleAlign;
+  innerTitleTextColorMode: InnerTitleTextColorMode;
+  innerTitleTextColor: string;
+
+  // Footer title options
+  footerTitleText?: string;
+  footerTitleFont: FontChoice;
+  footerTitleSize: number;
+  footerTitleWeight: FontWeightOption;
+  footerTitleAlign: FooterTitleAlign;
+  footerTitleTextColorMode: FooterTitleTextColorMode;
+  footerTitleTextColor: string;
 
   // debug 
   debugOutline: boolean;
@@ -111,6 +129,7 @@ export interface StatAdvancedOptions {
   // Image overlay
   enableImageOverlay: boolean;
   imageOverlay?: ImageOverlayConfig;
+
 }
 
 export const defaultOptions: StatAdvancedOptions = {
@@ -158,6 +177,17 @@ export const defaultOptions: StatAdvancedOptions = {
   innerTitleSize: 14,
   innerTitleWeight: 'regular',
   innerTitleAlign: 'center',
+  innerTitleTextColor: '#ffffff',
+  innerTitleTextColorMode: 'fixed',
+
+  // Footer
+  footerTitleText: '',
+  footerTitleFont: 'inherit',
+  footerTitleSize: 14,
+  footerTitleWeight: 'regular',
+  footerTitleAlign: 'center',
+  footerTitleTextColor: '#ffffff',
+  footerTitleTextColorMode: 'fixed',
 
   // debug 
   debugOutline: false,
@@ -173,5 +203,6 @@ export const defaultOptions: StatAdvancedOptions = {
     opacity: 100,
     zIndex: 1,
   },
+
 
 };

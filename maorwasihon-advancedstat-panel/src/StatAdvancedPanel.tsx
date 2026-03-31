@@ -211,7 +211,28 @@ export const StatAdvancedPanel = memo((props: Props) => {
         ...(fullOptions.debugOutline
           ? { border: '3px dotted black' }
           : {}),
+        color: innerTitleStyle.color,
       };
+
+
+      const footerTitleWeight = mapFontWeight(fullOptions.footerTitleWeight);      
+      const footerTitleSize = Math.max(8, Math.min(48, fullOptions.footerTitleSize));
+      const footerTitleFontFamily = mapFontChoice(fullOptions.footerTitleFont); // you can export mapFontChoice or duplicate logic
+
+      const footerStyle: React.CSSProperties = {
+        marginTop: 4,
+        textTransform: 'uppercase',
+        letterSpacing: 2,
+        fontSize: footerTitleSize,
+        fontWeight: footerTitleWeight,
+        fontFamily: footerTitleFontFamily,
+        textAlign: fullOptions.footerTitleAlign,
+        ...(fullOptions.debugOutline
+          ? { border: '3px dotted black' }
+          : {}),
+        color: footerTitleStyle.color,
+      };
+
 
       const bodyWrapperStyle: React.CSSProperties = {
         flex: 1,
@@ -256,6 +277,9 @@ export const StatAdvancedPanel = memo((props: Props) => {
             percentChangeColorMode={fullOptions.percentChangeColorMode}
           />
         </div>
+        {fullOptions.footerTitleText && 
+          <div style={footerStyle}>{fullOptions.footerTitleText}</div>
+        }
       </div>
     );
     },
@@ -286,7 +310,7 @@ export const StatAdvancedPanel = memo((props: Props) => {
   const thresholdColor = (primaryDisplay?.color as string | undefined) ?? undefined;
 
   // Build container style from full options + threshold color
-  const {style: containerStyle, className: containerClassNameFromStyle } = getContainerStyle(fullOptions, thresholdColor);
+  const {style: containerStyle, className: containerClassNameFromStyle, innerTitleStyle, footerTitleStyle } = getContainerStyle(fullOptions, thresholdColor);
   
   const hoverClass = fullOptions.enableHoverHighlight ? 'stat-advanced-hover-edge' : '';
   const combinedClassName = [containerClassNameFromStyle, hoverClass]

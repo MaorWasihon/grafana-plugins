@@ -8,6 +8,7 @@ import {
 import { StatAdvancedPanel } from './StatAdvancedPanel';
 import { defaultOptions, FONT_OPTIONS, StatAdvancedOptions } from './types';
 import { ImageOverlayEditor } from './ImageOverlayEditor';
+// import { SvgIconMappingsEditor } from './SvgIconMappingsEditor';
 
 export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
   .useFieldConfig()
@@ -18,8 +19,10 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
     const borderCategory = ['🔲 Border & shadow'];
     const fontCategory = ['📝 Text'];
     const innerTitleCategory = ['{ } Headline'];
+    const footerCategory = ['{ } Footer'];
     const debuggingCategory = ['🕵️ Debugging'];
     const imageCategory = ['🖼️ Image Overlay'];
+    // const svgIconCategory = ['✦ Status Icons'];
 
     // List of available images in the img folder
     const AVAILABLE_IMAGES = [
@@ -103,6 +106,27 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
           ],
       },
     })
+    // Text Color Mode
+    .addRadio({
+      path: 'innerTitleTextColorMode',
+      name: 'Title text color mode',
+      category: innerTitleCategory,
+      defaultValue: defaultOptions.innerTitleTextColorMode,
+      settings: {
+        options: [
+          { value: 'fixed', label: 'Fixed' },
+          { value: 'threshold', label: 'Threshold' },
+        ],
+      },
+    })
+    // Text Color
+    .addColorPicker({
+      path: 'innerTitleTextColor',
+      name: 'Title text color',
+      category: innerTitleCategory,
+      defaultValue: defaultOptions.innerTitleTextColor,
+      showIf: (config) => config.innerTitleTextColorMode === 'fixed',
+    })
     // align
     .addSelect({
       path: 'innerTitleAlign',
@@ -118,6 +142,86 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
       },
     });
 
+
+  // Footer Title
+  builder
+    // textbox
+    .addTextInput({
+      path: 'footerTitleText',
+      name: 'Title text (inside card)',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleText,
+    })
+    // font
+    .addSelect({
+      path: 'footerTitleFont',
+      name: 'Title font',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleFont,
+      settings: {
+        options: [...FONT_OPTIONS],
+      },
+    })
+    // size 
+    .addSliderInput({
+      path: 'footerTitleSize',
+      name: 'Title size (px)',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleSize,
+      settings: {
+        min: 8,
+        max: 48,
+        step: 1,
+      },
+    })
+    // weight
+    .addRadio({
+      path: 'footerTitleWeight',
+      name: 'Title weight',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleWeight,
+      settings: {
+          options: [
+            { value: 'regular', label: 'Regular' },
+            { value: 'bold',    label: 'Bold'    },
+          ],
+      },
+    })
+    // Text Color Mode
+    .addRadio({
+      path: 'footerTitleTextColorMode',
+      name: 'Title text color mode',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleTextColorMode,
+      settings: {
+        options: [
+          { value: 'fixed', label: 'Fixed' },
+          { value: 'threshold', label: 'Threshold' },
+        ],
+      },
+    })
+    // Text Color
+    .addColorPicker({
+      path: 'footerTitleTextColor',
+      name: 'Title text color',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleTextColor,
+      showIf: (config) => config.footerTitleTextColorMode === 'fixed',
+    })
+    // align
+    .addSelect({
+      path: 'footerTitleAlign',
+      name: 'Title alignment',
+      category: footerCategory,
+      defaultValue: defaultOptions.footerTitleAlign,
+      settings: {
+        options: [
+          { value: 'left', label: 'Left' },
+          { value: 'center', label: 'Center' },
+          { value: 'right', label: 'Right' },
+        ],
+      },
+    });
 
     // Background – only opacity now, color comes from thresholds
     builder
