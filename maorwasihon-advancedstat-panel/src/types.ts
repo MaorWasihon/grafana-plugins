@@ -6,7 +6,7 @@ import {
   PercentChangeColorMode,
 } from '@grafana/schema';
 import { ReduceDataOptions } from '@grafana/data';
-import { SvgIconMapping } from './SvgIconMappingsEditor';
+
 
 export type BackgroundGradientDirection = 'vertical' | 'horizontal' | 'diagonal';
 export type BackgroundImageFit = 'cover' | 'contain';
@@ -130,9 +130,6 @@ export interface StatAdvancedOptions {
   enableImageOverlay: boolean;
   imageOverlay?: ImageOverlayConfig;
 
-  // SVG icon overlays (threshold-color → animated icon)
-  enableSvgIcons: boolean;
-  svgIconMappings: SvgIconMapping[];
 }
 
 export const defaultOptions: StatAdvancedOptions = {
@@ -207,7 +204,5 @@ export const defaultOptions: StatAdvancedOptions = {
     zIndex: 1,
   },
 
-  // SVG icons
-  enableSvgIcons: false,
-  svgIconMappings: [],
+
 };

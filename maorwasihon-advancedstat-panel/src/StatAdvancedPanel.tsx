@@ -15,7 +15,6 @@ import { BigValue, DataLinksContextMenu, useTheme2, VizRepeater, VizRepeaterRend
 
 import { StatAdvancedOptions, defaultOptions } from './types';
 import { getContainerStyle, mapFontChoice, mapFontWeight } from './styles';
-// import { SvgIcon } from './svgIcons';
 import  './styles.css';
 
 // Import images for overlay
@@ -346,16 +345,6 @@ export const StatAdvancedPanel = memo((props: Props) => {
       })()
     : undefined;
 
-  // // ── SVG icon overlays ──────────────────────────────────────────────────────
-  // // Match the current threshold color to any configured icon mappings.
-  // const svgIconOverlays =
-  //   fullOptions.enableSvgIcons && fullOptions.svgIconMappings?.length
-  //     ? fullOptions.svgIconMappings.filter((m) => {
-  //         if (!thresholdColor || !m.color) { return false; }
-  //         return m.color.toLowerCase().trim() === thresholdColor.toLowerCase().trim();
-  //       })
-  //     : [];
-
   return (
     <div style={{
         width: '100%',
@@ -384,22 +373,6 @@ export const StatAdvancedPanel = memo((props: Props) => {
           />
         </div>
         {imageOverlayStyle && <div style={imageOverlayStyle} />}
-        {/* Animated SVG icon overlays
-        {svgIconOverlays.map((m, idx) => (
-          <div
-            key={idx}
-            style={{
-              position: 'absolute',
-              left: `${m.positionX}%`,
-              top: `${m.positionY}%`,
-              transform: 'translate(-50%, -50%)',
-              pointerEvents: 'none',
-              zIndex: 1,
-            }}
-          >
-            <SvgIcon type={m.iconType} color={thresholdColor!} size={m.size} />
-          </div>
-        ))} */}
     </div>
   );
 });

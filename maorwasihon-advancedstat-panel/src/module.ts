@@ -484,32 +484,4 @@ export const plugin = new PanelPlugin<StatAdvancedOptions>(StatAdvancedPanel)
         showIf: (config) => config.textMode === BigValueTextMode.ValueAndName,
       });
 
-    // // ── SVG Status Icons ────────────────────────────────────────────────────
-    // const SvgIconMappingsEditorWrapper = (props: any) => {
-    //   const React = require('react');
-    //   return React.createElement(SvgIconMappingsEditor, {
-    //     value: props.value,
-    //     onChange: props.onChange,
-    //   });
-    // };
-
-    // builder
-    //   .addBooleanSwitch({
-    //     path: 'enableSvgIcons',
-    //     name: 'Enable status icons',
-    //     description: 'Overlay animated icons that are triggered by the threshold colour',
-    //     category: svgIconCategory,
-    //     defaultValue: defaultOptions.enableSvgIcons,
-    //   })
-    //   .addCustomEditor({
-    //     id: 'svgIconMappings',
-    //     path: 'svgIconMappings',
-    //     name: 'Icon mappings',
-    //     description: 'Map a threshold color → animated icon + position',
-    //     category: svgIconCategory,
-    //     editor: SvgIconMappingsEditorWrapper,
-    //     defaultValue: defaultOptions.svgIconMappings,
-    //     showIf: (config) => config.enableSvgIcons === true,
-    //   });
-
   });
