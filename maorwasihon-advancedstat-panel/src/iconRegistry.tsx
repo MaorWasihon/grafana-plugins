@@ -1,5 +1,7 @@
 import React from 'react';
 import { UavIcon } from './icons/UavIcon';
+import { AntennaIcon } from './icons/AntennaIcon';
+import { CameraIcon } from './icons/CameraIcon';
 
 export interface IconDefinition {
   id: string;
@@ -17,6 +19,26 @@ export const ICON_REGISTRY: IconDefinition[] = [
     id: 'uav-static',
     label: 'UAV (static)',
     render: (color, size) => <UavIcon color={color} size={size} animated={false} />,
+  },
+  {
+    id: 'antenna-animated',
+    label: 'Antenna (animated)',
+    render: (color, size) => <AntennaIcon color={color} size={size} animated={true} />,
+  },
+  {
+    id: 'antenna-static',
+    label: 'Antenna (static)',
+    render: (color, size) => <AntennaIcon color={color} size={size} animated={false} />,
+  },
+  {
+    id: 'camera-animated',
+    label: 'Camera (live)',
+    render: (color, size) => <CameraIcon color={color} size={size} animated={true} />,
+  },
+  {
+    id: 'camera-static',
+    label: 'Camera (offline)',
+    render: (color, size) => <CameraIcon color={color} size={size} animated={false} />,
   },
 ];
 

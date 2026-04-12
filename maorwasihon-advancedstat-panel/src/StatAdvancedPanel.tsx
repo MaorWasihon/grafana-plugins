@@ -195,29 +195,28 @@ export const StatAdvancedPanel = memo((props: Props) => {
     }
   }, [fullOptions.footerTextSource, fullOptions.footerTitleText]);
 
-  const resolveIcon = useCallback((fieldDisplay: FieldDisplay): React.ReactNode | null => {
-  if (!fullOptions.enableIconMapping || !fullOptions.iconMappings?.length) {
-    return null;
-  }
+  const resolveIcon = useCallback((fieldDisplay: FieldDisplay, size: number = 48): React.ReactNode | null => {
+    if (!fullOptions.enableIconMapping || !fullOptions.iconMappings?.length) {
+      return null;
+    }
 
-  const rawValue = String(fieldDisplay.display.text ?? '');
-  const color = (fieldDisplay.display.color as string | undefined) ?? '#ffffff';
+    const rawValue = String(fieldDisplay.display.text ?? '');
+    const color = (fieldDisplay.display.color as string | undefined) ?? '#ffffff';
 
-  for (const rule of fullOptions.iconMappings) {
-    if (rule.type === 'exact') {
-      if (rawValue === rule.exactValue) {
-        return renderIcon(rule.iconId, color, 48);
-      }
-    } else if (rule.type === 'threshold') {
-      // threshold match: if this cell has a threshold color, the rule applies
-      if (fieldDisplay.display.color) {
-        return renderIcon(rule.iconId, color, 48);
+    for (const rule of fullOptions.iconMappings) {
+      if (rule.type === 'exact') {
+        if (rawValue === rule.exactValue) {
+          return renderIcon(rule.iconId, color, size);
+        }
+      } else if (rule.type === 'threshold') {
+        if (fieldDisplay.display.color) {
+          return renderIcon(rule.iconId, color, size);
+        }
       }
     }
-  }
 
-  return null;
-}, [fullOptions.enableIconMapping, fullOptions.iconMappings]);
+    return null;
+  }, [fullOptions.enableIconMapping, fullOptions.iconMappings]);
 
   // Compute values once so we can read the threshold color
   const values = useMemo(() => getValues(), [getValues]);
@@ -227,6 +226,20 @@ export const StatAdvancedPanel = memo((props: Props) => {
   // Build container style — declared before renderComponent so styles are available in the closure
   const { style: containerStyle, className: containerClassNameFromStyle, innerTitleStyle, footerTitleStyle } =
     getContainerStyle(fullOptions, thresholdColor);
+
+  const hoverClass = fullOptions.enableHoverHighlight ? 'stat-advanced-hover-edge' : '';
+  const combinedClassName = [containerClassNameFromStyle, hoverClass]
+    .filter(Boolean)
+    .join(' ');
+  const pad = Math.max(0, fullOptions.panelPadding ?? 0);
+  const innerWidth = Math.max(0, width - pad * 2);
+  const innerHeight = Math.max(0, height - pad * 2);
+
+  const iconSize = Math.min(innerWidth, innerHeight) * 0.5;
+  const panelIcon = useMemo(
+    () => (values[0] ? resolveIcon(values[0], iconSize) : null),
+    [values, resolveIcon, iconSize]
+  );
 
   const renderComponent = useCallback(
     (
@@ -280,12 +293,13 @@ export const StatAdvancedPanel = memo((props: Props) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        position: 'relative',
         ...(fullOptions.debugOutline ? { border: '3px dotted blue' } : {}),
       };
 
       const footerText = resolveFooterText(value);
-      const icon = resolveIcon(value);
-      
+      const showMappedIcon = panelIcon && !fullOptions.enableImageOverlay;
+
       return (
         <div style={{
           fontWeight: weight,
@@ -297,50 +311,45 @@ export const StatAdvancedPanel = memo((props: Props) => {
           {fullOptions.innerTitleText &&
             <div style={titleStyle}>{fullOptions.innerTitleText}</div>
           }
-            <div style={bodyWrapperStyle}>
-              {icon ? (
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                  height: '100%',
-                  backgroundSize: 'contain',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                  zIndex: fullOptions.imageOverlay!.zIndex,
-                  pointerEvents: 'none',
-                }}>
-                  {icon}
-                </div>
-              ) : (
-                <BigValue
-                  value={value.display}
-                  count={count}
-                  sparkline={sparkline}
-                  colorMode={fullOptions.colorMode}
-                  graphMode={fullOptions.graphMode}
-                  justifyMode={fullOptions.justifyMode}
-                  textMode={getTextMode()}
-                  alignmentFactors={alignmentFactors}
-                  text={getTextDisplayOptions()}
-                  width={itemWidth}
-                  height={itemHeight}
-                  theme={theme}
-                  onClick={openMenu}
-                  className={targetClassName}
-                  disableWideLayout={!fullOptions.wideLayout}
-                  percentChangeColorMode={fullOptions.percentChangeColorMode}
-                />
-              )}
-            </div>
+          <div style={bodyWrapperStyle}>
+            {showMappedIcon ? (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: 1,
+                pointerEvents: 'none',
+              }}>
+                {panelIcon}
+              </div>
+            ) : (
+              <BigValue
+                value={value.display}
+                count={count}
+                sparkline={sparkline}
+                colorMode={fullOptions.colorMode}
+                graphMode={fullOptions.graphMode}
+                justifyMode={fullOptions.justifyMode}
+                textMode={getTextMode()}
+                alignmentFactors={alignmentFactors}
+                text={getTextDisplayOptions()}
+                width={itemWidth}
+                height={itemHeight}
+                theme={theme}
+                onClick={openMenu}
+                className={targetClassName}
+                disableWideLayout={!fullOptions.wideLayout}
+                percentChangeColorMode={fullOptions.percentChangeColorMode}
+              />
+            )}
+          </div>
           {footerText &&
             <div style={footerStyle}>{footerText}</div>
           }
         </div>
       );
     },
-    [theme, timeRange, fullOptions, getTextMode, getTextDisplayOptions, resolveFooterText, innerTitleStyle, footerTitleStyle]
+    [theme, timeRange, fullOptions, getTextMode, getTextDisplayOptions, resolveFooterText, innerTitleStyle, footerTitleStyle, panelIcon]
   );
 
   const renderValue = useCallback(
@@ -360,14 +369,6 @@ export const StatAdvancedPanel = memo((props: Props) => {
     },
     [renderComponent]
   );
-
-  const hoverClass = fullOptions.enableHoverHighlight ? 'stat-advanced-hover-edge' : '';
-  const combinedClassName = [containerClassNameFromStyle, hoverClass]
-    .filter(Boolean)
-    .join(' ');
-  const pad = Math.max(0, fullOptions.panelPadding ?? 0);
-  const innerWidth = Math.max(0, width - pad * 2);
-  const innerHeight = Math.max(0, height - pad * 2);
 
   // Image overlay rendering
   const imageOverlayStyle: React.CSSProperties | undefined =
